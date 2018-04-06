@@ -20,4 +20,58 @@ We can also create:
 - output as CSV, meaning if there is a field with commas then it should be in speech marks. e.g. use `write.csv` in R
 - The gene information can be obtained from external sources e.g. UCSC mysql server. But we may need to bring this into our own
 
+* * *
+
+# Running the mysql database in docker
+
+TBC
+
+
+* * *
+
+# Running the website in docker
+
+## 1. Install docker 
+
+[https://docs.docker.com/install/](https://docs.docker.com/install/)
+
+## 2. Clone a docker image that can run php websites
+
+```
+docker pull fauria/lamp
+```
+
+## 3. Check to see if it works:
+
+Run
+
+```
+docker run -d -p 2000:80 --name godmc_database fauria/lamp
+```
+
+and then go to http://localhost:2000 in the browser - it should show the apache default page
+
+## 4. Now we need to load in the real website
+
+Log into the docker container
+
+```
+docker exec -it godmc_database /bin/bash
+```
+
+Once you are in you need to clone the bitbucket repository in the correct location
+
+```
+cd /var/www/html
+git clone https://bitbucket.org/paulsmith01/mqtldb.git
+```
+
+Now in your browser you should be able to go to http://localhost:2000/mqtldb and it will show the web page.
+
+## 5. Updating
+
+Every time the bitbucket repository is updated, login as in (4) and go to `/var/www/html/mqtldb` and run `git pull`
+
+
+
 

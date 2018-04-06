@@ -1,4 +1,3 @@
-
 # Find the significant hits for a CpG
 
 SELECT * FROM assoc_meta, snp, cpg 
@@ -53,5 +52,4 @@ SELECT * FROM assoc_meta, snp, cpg
 	ORDER BY pval
 
 # Here {1} is the gene chromosome from query (1), {2} is the gene start position, {3} is the gene stop position, {4} is a p-value threshold
-
 
