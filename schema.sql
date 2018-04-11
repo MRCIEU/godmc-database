@@ -8,12 +8,11 @@ DROP TABLE IF EXISTS assoc_cohort;
 CREATE TABLE IF NOT EXISTS cohort (
     id VARCHAR NOT NULL,
     name TINYTEXT NOT NULL,
-    n INT NOT NULL,
+    samplesize INT NOT NULL,
     origin TINYTEXT
     tissue TINYTEXT
     cohort_type TINYTEXT NOT NULL,
-    phase1 BOOL NOT NULL,
-    phase2 BOOL NOT NULL,
+    phase BOOL NOT NULL,
     nsnp INT NOT NULL,
     ncpg INT NOT NULL,
     genotype_array TINYTEXT NOT NULL,
@@ -22,19 +21,25 @@ CREATE TABLE IF NOT EXISTS cohort (
     imputation_software TINYTEXT NOT NULL,
     normalisation_software TINYTEXT NOT NULL,
     normalisation_method TINYTEXT NOT NULL,
+    sampleQC_methylation TINYTEXT NOT NULL,
+    probeQC_methylation TINYTEXT NOT NULL,
+    postnormalization_QC TINYTEXT NOT NULL,
     covariates TINYTEXT NOT NULL,
     cellcounts TINYTEXT NOT NULL,
     cellcounts_reference TINYTEXT NOT NULL,
     average_age DOUBLE NOT NULL,
-    lambda1 DOUBLE NOT NULL,
-    lambda1 DOUBLE NOT NULL,
+    lambda_nocisadj DOUBLE NOT NULL,
+    lambda_cisadj DOUBLE NOT NULL,
     m_value DOUBLE NOT NULL,
-    percentage_male DOUBLE NOT NULL
+    m_sd DOUBLE NOT NULL,
+    m_se DOUBLE NOT NULL,
+    proportion_male DOUBLE NOT NULL
     PRIMARY KEY (id)
 );
 
 CREATE TABLE IF NOT EXISTS cpg (
     name VARCHAR NOT NULL,
+    probetype TINYTEXT NOT NULL,
     chr INT NOT NULL,
     pos INT NOT NULL,
     assoc_class TINYTEXT NOT NULL,
@@ -42,7 +47,7 @@ CREATE TABLE IF NOT EXISTS cpg (
     qc_twinsuk BOOL NOT NULL,
     weighted_mean DOUBLE NOT NULL,
     weighted_sd DOUBLE NOT NULL,
-    sample_size INT NOT NULL,
+    samplesize INT NOT NULL,
     PRIMARY KEY (name)
 );
 
@@ -53,10 +58,14 @@ CREATE TABLE IF NOT EXISTS snp (
     pos INT NOT NULL,
     allele1 TINYTEXT NOT NULL,
     allele2 TINYTEXT NOT NULL,
-    freq1 DOUBLE NOT NULL,
-    freq1_se DOUBLE NOT NULL,
+    freq1_1000G DOUBLE NOT NULL,
+    nchrs_1000G DOUBLE NOT NULL,
     type TINYTEXT NOT NULL,
+    snp_tested TINYTEXT NOT NULL,
     assoc_class TINYTEXT NOT NULL,
+    min_pval DOUBLE NOT NULL,
+    max_abs_Effect DOUBLE NOT NULL,
+    mqtl_clumped TINYTEXT NOT NULL,
     PRIMARY KEY (name),
     INDEX(rsid(7))
 );
@@ -64,11 +73,14 @@ CREATE TABLE IF NOT EXISTS snp (
 CREATE TABLE IF NOT EXISTS assoc_meta (
     cpg VARCHAR NOT NULL,
     snp VARCHAR NOT NULL,
-    beta DOUBLE NOT NULL,
+    beta_a1 DOUBLE NOT NULL,
     se DOUBLE NOT NULL,
     pval DOUBLE NOT NULL,
-    n INT NOT NULL,
-    sentinel BOOL NOT NULL
+    samplesize INT NOT NULL,
+    allele1 DOUBLE NOT NULL,
+    allele2 DOUBLE NOT NULL,
+    freq_a1 DOUBLE NOT NULL,
+    freq_se DOUBLE NOT NULL,
     cistrans BOOL NOT NULL,
     num_studies INT NOT NULL,
     direction TINYTEXT NOT NULL,
@@ -76,7 +88,7 @@ CREATE TABLE IF NOT EXISTS assoc_meta (
     hetchisq DOUBLE NOT NULL,
     hetpval DOUBLE NOT NULL,
     tausq DOUBLE NOT NULL,
-    beta_are DOUBLE NOT NULL,
+    beta_are_a1 DOUBLE NOT NULL,
     se_are DOUBLE NOT NULL,
     pval_are DOUBLE NOT NULL,
     se_mre DOUBLE NOT NULL,

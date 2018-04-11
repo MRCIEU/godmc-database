@@ -1,0 +1,215 @@
+
+R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-unknown-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> library(data.table)
+> library(dplyr)
+
+Attaching package: ‘dplyr’
+
+The following objects are masked from ‘package:data.table’:
+
+    between, first, last
+
+The following objects are masked from ‘package:stats’:
+
+    filter, lag
+
+The following objects are masked from ‘package:base’:
+
+    intersect, setdiff, setequal, union
+
+> ###
+> load("/panfs/panasas01/shared-godmc/database_files/snps.rdata")
+> 
+> chunks<-c(1:962)
+> 
+> res.all<-data.frame()
+> for (chunk in 1:length(chunks)){
++ 
++ load(paste("/panfs/panasas01/shared-godmc/godmc_phase2_analysis/results/16/16_cleaned_",chunk,".rdata",sep=""))
++ res$chunk<-chunk
++ cat(nrow(res),"\n")
++ m<-match(res$snp,out_df2$name)
++ snpdf<-out_df2[m,]
++ res$Allele1<-toupper(res$Allele1)
++ res$Allele2<-toupper(res$Allele2)
++ 
++ w<-which(res$Allele1==snpdf$allele2&res$Allele2==snpdf$allele1)
++ res$allele1.new<-res$Allele1
++ res$allele2.new<-res$Allele2
++ res$Freq.new<-res$Freq1
++ res$Effect.new<-res$Effect
++ res$EffectARE.new<-res$EffectARE
++ 
++ res$allele1.new[w]<-res$Allele2[w]
++ res$allele2.new[w]<-res$Allele1[w]
++ res$Freq.new[w]<-1-res$Freq1[w]
++ res$Effect.new[w]<--(res$Effect[w])
++ res$EffectARE.new[w]<--(res$EffectARE[w])
++ res$num_studies<-res$HetDf+1
++ w<-which(names(res)%in%c("snpchr","snppos","snptype","cpgchr","cpgpos","Allele1","Allele2","Freq1","Effect","HetDf","EffectARE"))
++ res<-res[,-w]
++ 
++ res.all<-rbind(res.all,res)
++ }
+80118 
+93328 
+78687 
+71256 
+110301 
+82643 
+80775 
+97406 
+79241 
+80724 
+109337 
+90607 
+85587 
+92885 
+88705 
+81788 
+62687 
+82556 
+83826 
+82084 
+98194 
+88850 
+91603 
+57547 
+82872 
+82289 
+77316 
+69045 
+97655 
+84876 
+66796 
+83812 
+82893 
+98257 
+91860 
+76827 
+79872 
+82697 
+89822 
+102611 
+77523 
+71439 
+69708 
+60247 
+82770 
+90969 
+78130 
+99946 
+77043 
+77192 
+85054 
+81148 
+88578 
+88395 
+82004 
+67700 
+70135 
+83637 
+92125 
+84919 
+88782 
+61554 
+70877 
+76965 
+76689 
+92372 
+76563 
+85114 
+81810 
+76727 
+101298 
+104513 
+96659 
+86845 
+79924 
+88965 
+96890 
+69661 
+83335 
+92461 
+85965 
+98617 
+92664 
+92526 
+83875 
+66609 
+84106 
+91835 
+75571 
+95236 
+88164 
+106256 
+96364 
+94875 
+72363 
+94268 
+82424 
+103784 
+94493 
+97920 
+67075 
+93584 
+70736 
+90242 
+82647 
+90992 
+71474 
+70676 
+99221 
+80525 
+61341 
+83523 
+91403 
+81288 
+59008 
+67652 
+73826 
+85697 
+86455 
+80075 
+78940 
+83459 
+70104 
+95539 
+71601 
+73942 
+70693 
+84060 
+83654 
+104521 
+77216 
+78287 
+78755 
+80849 
+66089 
+94108 
+96573 
+75775 
+59149 
+80437 
+87967 
+92725 
+89766 
+87385 
+97921 

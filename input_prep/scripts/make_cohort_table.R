@@ -1,0 +1,17 @@
+r<-read.csv("/panfs/panasas01/shared-godmc/database_files/TableS1_descriptives.csv")
+w<-which(names(r)%in%c("Nsamples01","Nsamples04"))
+r<-r[,-w]
+names(r)<-c("name","origin","tissue","cohort_type","phase","samplesize","nsnp","genotype_array","imputation_reference","imputation_software","ncpg","methylation_array","normalisation_method","normalisation_software","sampleQC_methylation","probeQC_methylation","postnormalization_QC","proportion_male","average_age","covariates","cellcounts","cellcounts_reference","lambda_nocisadj","lambda_cisadj")
+load("/panfs/panasas01/sscm/epzjlm/repo/godmc_phase2_analysis/mstat/mstats_chr20.RData")
+dframe2<-unique(data.frame(study_names_in=dframe$study_names_in,M=dframe$M,M_sd=dframe$M_sd,M_se=dframe$M_se))
+dframe2[,1]<-gsub("00_ARIES","ARIES",dframe2[,1])
+dframe2[,1]<-gsub("ccg","EGC_CTG",dframe2[,1])
+dframe2[,1]<-gsub("as_cc","EGC_asthma",dframe2[,1])
+dframe2[,1]<-gsub("Project_MinE_s27","MinE",dframe2[,1])
+dframe2[,1]<-gsub("IOW3g","IOW F2",dframe2[,1])
+dframe2[,1]<-gsub("InterAct","EPIC_Norfolk",dframe2[,1])
+names(dframe2)<-c("study","m_value","m_sd","m_se")
+m<-match(r$name,dframe2[,1])
+df<-data.frame(r,dframe2[m,-1])
+write.csv(r,file="/panfs/panasas01/shared-godmc/database_files/cohort.csv",na="NULL")
+
