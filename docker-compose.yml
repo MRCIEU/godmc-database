@@ -1,0 +1,15 @@
+version: '3.1'
+
+services:
+
+  db:
+    image: mysql
+    restart: unless-stopped
+    ports:
+       - 9306:3306
+    volumes:
+     - "./mysql-scripts:/scripts-import"
+     - "./data:/data-import"
+    environment:
+      MYSQL_ROOT_PASSWORD: "qnwNQ6wBW"
+      MYSQL_DATABASE: "godmc"
