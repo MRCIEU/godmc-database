@@ -24,18 +24,20 @@ We can also create:
 
 # Running the mysql database in docker
 
-## 1. Install docker 
+## 1. Add data and set up local config
+
+- Create local ```./data/``` directory and add csv files to this 
+- Create ```/scripts-import/changepass.sh``` based on ```/scripts-import/changepass_template.sh```
+
+## 2. Install docker 
 
 [https://docs.docker.com/install/](https://docs.docker.com/install/)
 
-## 2. Run docker-compose file to set up container
+## 3. Run docker-compose file to set up container
 
 ```
 docker-compose up
 ```
-## 3. Add data
-
-Create local ```./data/``` directory and add csv files to this 
 
 ## 4. Login to container
 
@@ -44,8 +46,6 @@ docker exec -it godmcdatabase_db_1 bash
 ```
 
 ## 5. Run importdata script within container
-
-**NB** This will also run the ```/scripts-import/changepass.sh``` script which is excluded from this repo - modify ```/scripts-import/changepass_template.sh``` to fit
 
 ```
 bash /scripts-import/importdata.sh
