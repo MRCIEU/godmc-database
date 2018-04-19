@@ -71,7 +71,7 @@ docker pull fauria/lamp
 Run
 
 ```
-docker run -d -p 2000:80 --name godmc_database fauria/lamp
+docker run -d -p 2000:80 --name godmc_database_web fauria/lamp
 ```
 
 and then go to http://localhost:2000 in the browser - it should show the apache default page
@@ -81,7 +81,7 @@ and then go to http://localhost:2000 in the browser - it should show the apache 
 Log into the docker container
 
 ```
-docker exec -it godmc_database /bin/bash
+docker exec -it godmc_database_web /bin/bash
 ```
 
 Once you are in you need to clone the bitbucket repository in the correct location
