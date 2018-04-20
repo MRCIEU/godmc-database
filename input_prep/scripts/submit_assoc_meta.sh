@@ -1,12 +1,13 @@
 #!/bin/bash
 
-#PBS -N db-snp
-#PBS -o db_snp-output
-#PBS -e db_snp-error
+#PBS -N db-assoc
+#PBS -o assoc-output
+#PBS -e assoc-error
 #PBS -l walltime=12:00:00
-#PBS -l nodes=1:ppn=4
+#PBS -l nodes=1:ppn=8
 #PBS -S /bin/bash
-# PBS -t 1-23
+#PBS -t 1-962
+
 
 echo Running on host `hostname`
 echo Time is `date`
@@ -20,6 +21,6 @@ if [ -n "${1}" ]; then
 fi
 
 i=${PBS_ARRAYID}
-cd /panfs/panasas01/sscm/epzjlm/repo/godmc-database/input_prep/scripts
-R CMD BATCH --no-save --no-restore make_assoc_meta_table.R assoc.Rout
 
+cd /panfs/panasas01/sscm/epzjlm/repo/godmc-database/input_prep/scripts
+R CMD BATCH --no-save --no-restore '--args '$i'' make_assoc_meta_table.R assoc$i.Rout

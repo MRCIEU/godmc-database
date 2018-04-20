@@ -66,7 +66,7 @@ gene$end[w]<-gene$start.original[w]
 names(gene)
 df<-data.frame(chr=gene$chromosome,start_pos=gene$start.original,stop_pos=gene$end.original,genename=gene$genename,start.original=gene$start,stop.original=gene$end,source=gene$source,strand.original=gene$V7,annotation=gene$V9, gene_type=gene$gene_type)
 
-write.csv(df,file="/panfs/panasas01/shared-godmc/database_files/genes.csv",na="NULL")
+write.csv(df,file="/panfs/panasas01/shared-godmc/database_files/genes.csv",na="NULL",row.names=FALSE)
 
 
 

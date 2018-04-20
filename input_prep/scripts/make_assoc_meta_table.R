@@ -3,10 +3,13 @@ library(dplyr)
 ###
 load("/panfs/panasas01/shared-godmc/database_files/snps.rdata")
 
-chunks<-c(1:962)
+#chunks<-c(1:962)
+arguments<-commandArgs(T)
+chunk<-as.numeric(arguments[1])
 
-res.all<-data.frame()
-for (chunk in 1:length(chunks)){
+
+#res.all<-data.frame()
+#for (chunk in 1:length(chunks)){
 
 load(paste("/panfs/panasas01/shared-godmc/godmc_phase2_analysis/results/16/16_cleaned_",chunk,".rdata",sep=""))
 res$chunk<-chunk
@@ -32,11 +35,14 @@ res$num_studies<-res$HetDf+1
 w<-which(names(res)%in%c("snpchr","snppos","snptype","cpgchr","cpgpos","Allele1","Allele2","Freq1","Effect","HetDf","EffectARE"))
 res<-res[,-w]
 
-res.all<-rbind(res.all,res)
-}
+#res.all<-rbind(res.all,res)
+#}
 
-names(res.all)<-c("snp","cpg","freq_se","se","pval","direction","hetisq","hetchisq","hetpval","se_are","pval_are","tausq","se_mre","pval_mre","samplesize","cistrans","chunk","allele1","allele2","freq_a1","beta_a1","beta_are_a1","num_studies")
-save(res.all,"/panfs/panasas01/shared-godmc/database_files/assoc_meta.rdata")
+#names(res.all)<-c("snp","cpg","freq_se","se","pval","direction","hetisq","hetchisq","hetpval","se_are","pval_are","tausq","se_mre","pval_mre","samplesize","cistrans","chunk","allele1","allele2","freq_a1","beta_a1","beta_are_a1","num_studies")
+#save(res.all,"/panfs/panasas01/shared-godmc/database_files/assoc_meta.rdata")
+#write.csv(res.all,file="/panfs/panasas01/shared-godmc/database_files/assoc_meta.csv",na="NULL")
 
-write.csv(res.all,file="/panfs/panasas01/shared-godmc/database_files/assoc_meta.csv",na="NULL")
+names(res)<-c("snp","cpg","freq_se","se","pval","direction","hetisq","hetchisq","hetpval","se_are","pval_are","tausq","se_mre","pval_mre","samplesize","cistrans","chunk","allele1","allele2","freq_a1","beta_a1","beta_are_a1","num_studies")
+
+write.csv(res,paste0(file="/panfs/panasas01/shared-godmc/database_files/assoc_meta",chunk,".csv"),na="NULL")
 

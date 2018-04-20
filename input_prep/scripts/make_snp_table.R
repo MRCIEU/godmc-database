@@ -136,6 +136,6 @@ ind <- which(out_df2$name %in% badsnps)
 out_df2$snp_qc[ind]<-"FAILED:multiallelic"
 
 save(out_df2,file="/panfs/panasas01/shared-godmc/database_files/snps.rdata")
-write.csv(out_df2,file="/panfs/panasas01/shared-godmc/database_files/snps.csv",na="NULL")
+write.csv(out_df2,file="/panfs/panasas01/shared-godmc/database_files/snps.csv",na="NULL",row.names=FALSE)
 
 

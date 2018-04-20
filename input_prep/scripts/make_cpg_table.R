@@ -97,7 +97,7 @@ m<-match(df$name,df2$cpg)
 df<-data.frame(df,df2[m,-1])
 
 save(df,file="/panfs/panasas01/shared-godmc/database_files/cpgs.rdata")
-write.csv(df,file="/panfs/panasas01/shared-godmc/database_files/cpgs.csv",na="NULL")
+write.csv(df,file="/panfs/panasas01/shared-godmc/database_files/cpgs.csv",na="NULL",row.names=FALSE)
 
 
 
