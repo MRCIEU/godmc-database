@@ -24,7 +24,32 @@ We can also create:
 
 # Running the mysql database in docker
 
-TBC
+## 1. Add data and set up local config
+
+- Create local ```./data/``` directory and add csv files to this 
+- Create ```/scripts-import/changepass.sh``` based on ```/scripts-import/changepass_template.sh```
+
+## 2. Install docker 
+
+[https://docs.docker.com/install/](https://docs.docker.com/install/)
+
+## 3. Run docker-compose file to set up container
+
+```
+docker-compose up
+```
+
+## 4. Login to container
+
+```
+docker exec -it godmcdatabase_db_1 bash
+```
+
+## 5. Run importdata script within container
+
+```
+bash /scripts-import/importdata.sh
+```
 
 
 * * *
@@ -46,7 +71,7 @@ docker pull fauria/lamp
 Run
 
 ```
-docker run -d -p 2000:80 --name godmc_database fauria/lamp
+docker run -d -p 2000:80 --name godmc_database_web fauria/lamp
 ```
 
 and then go to http://localhost:2000 in the browser - it should show the apache default page
@@ -56,7 +81,7 @@ and then go to http://localhost:2000 in the browser - it should show the apache 
 Log into the docker container
 
 ```
-docker exec -it godmc_database /bin/bash
+docker exec -it godmc_database_web /bin/bash
 ```
 
 Once you are in you need to clone the bitbucket repository in the correct location
