@@ -135,6 +135,7 @@ badsnps <- scan("/panfs/panasas01/shared-godmc/godmc_phase2_analysis/04_conditio
 ind <- which(out_df2$name %in% badsnps)
 out_df2$snp_qc[ind]<-"FAILED:multiallelic"
 
+out_df2<-data.frame(out_df2[,c("name","rsid","chr","pos","allele1","allele2","freq1_1000G","nchrs_1000G","type","snp_tested","assoc_class","min_pval","max_abs_Effect","mqtl_clumped","snp_qc")])
 save(out_df2,file="/panfs/panasas01/shared-godmc/database_files/snps.rdata")
 write.csv(out_df2,file="/panfs/panasas01/shared-godmc/database_files/snps.csv",na="NULL",row.names=FALSE)
 

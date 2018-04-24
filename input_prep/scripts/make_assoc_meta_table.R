@@ -44,5 +44,7 @@ res<-res[,-w]
 
 names(res)<-c("snp","cpg","freq_se","se","pval","direction","hetisq","hetchisq","hetpval","se_are","pval_are","tausq","se_mre","pval_mre","samplesize","cistrans","chunk","allele1","allele2","freq_a1","beta_a1","beta_are_a1","num_studies")
 
-write.csv(res,paste0(file="/panfs/panasas01/shared-godmc/database_files/assoc_meta",chunk,".csv"),na="NULL")
+write.csv(res,paste0(file="/panfs/panasas01/shared-godmc/database_files/assoc_meta",chunk,".csv"),na="NULL",row.names=F)
 
+#awk -F"," 'BEGIN{OFS=",";} {print $2,$1,$21,$4,$5,$15,$18,$19,$20,$3,$16,$23,$6,$7,$8,$9,$12,$22,$10,$11,$13,$14,$17;}' <assoc_meta_all.csv >assoc_meta_all.csv2
+#mv assoc_meta_all.csv2 assoc_meta_all.csv

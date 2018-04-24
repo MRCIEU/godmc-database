@@ -96,9 +96,9 @@ df2<-data.frame(df2,samplesize=cpg_n[m])
 m<-match(df$name,df2$cpg)
 df<-data.frame(df,df2[m,-1])
 
+df<-data.frame(df[,c("name","probetype","chr","pos","assoc_class","qc_zhou","qc_twinsuk","weighted_mean","weighted_sd","samplesize")])
 save(df,file="/panfs/panasas01/shared-godmc/database_files/cpgs.rdata")
 write.csv(df,file="/panfs/panasas01/shared-godmc/database_files/cpgs.csv",na="NULL",row.names=FALSE)
-
 
 
 
