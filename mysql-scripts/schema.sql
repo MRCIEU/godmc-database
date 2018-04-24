@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS cohort (
     m_sd DOUBLE NOT NULL,
     m_se DOUBLE NOT NULL,
     proportion_male DOUBLE NOT NULL,
-    PRIMARY KEY (id)
+    PRIMARY KEY (name)
 );
 
 CREATE TABLE IF NOT EXISTS cpg (

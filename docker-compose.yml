@@ -4,6 +4,7 @@ services:
 
   db:
     image: mysql
+    container_name: godmc_database
     restart: unless-stopped
     ports:
        - 9306:3306

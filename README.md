@@ -42,7 +42,7 @@ docker-compose up
 ## 4. Login to container
 
 ```
-docker exec -it godmcdatabase_db_1 bash
+docker exec -it godmc_database bash
 ```
 
 ## 5. Run importdata script within container
