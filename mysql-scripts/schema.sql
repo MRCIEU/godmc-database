@@ -6,8 +6,7 @@ DROP TABLE IF EXISTS assoc_meta;
 DROP TABLE IF EXISTS assoc_cohort;
 
 CREATE TABLE IF NOT EXISTS cohort (
-    id VARCHAR(20) NOT NULL,
-    name TINYTEXT NOT NULL,
+    name VARCHAR(20) NOT NULL,
     samplesize INT NOT NULL,
     origin TINYTEXT,
     tissue TINYTEXT,
@@ -66,6 +65,7 @@ CREATE TABLE IF NOT EXISTS snp (
     min_pval DOUBLE NOT NULL,
     max_abs_Effect DOUBLE NOT NULL,
     mqtl_clumped TINYTEXT NOT NULL,
+    snp_qc TINYTEXT NOT NULL,
     PRIMARY KEY (name),
     INDEX(rsid(7))
 );
@@ -114,14 +114,16 @@ CREATE TABLE IF NOT EXISTS assoc_cohort (
     INDEX(snp)
 ) PARTITION BY KEY();
 
-
 CREATE TABLE IF NOT EXISTS gene (
     name VARCHAR(20) NOT NULL,
     chr INT NOT NULL,
     start_pos INT NOT NULL,
     stop_pos INT NOT NULL,
+    start_original INT NOT NULL,
+    stop_original INT NOT NULL,
+    source TINYTEXT NOT NULL,
+    strand_original TINYTEXT NOT NULL,
+    gene_type  TINYTEXT NOT NULL,
     PRIMARY KEY(name)
 );
-
-
 
