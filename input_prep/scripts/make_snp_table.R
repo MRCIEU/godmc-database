@@ -140,7 +140,7 @@ out_df2$chr<-gsub("chr","",out_df2$chr)
 out_df2$chr<-gsub("X","23",out_df2$chr)
 out_df2$chr<-gsub("Y","24",out_df2$chr)
 out_df2$chr<-gsub("M","25",out_df2$chr)
+
 save(out_df2,file="/panfs/panasas01/shared-godmc/database_files/snps.rdata")
 write.csv(out_df2,file="/panfs/panasas01/shared-godmc/database_files/snps.csv",na="NULL",row.names=FALSE)
-
 

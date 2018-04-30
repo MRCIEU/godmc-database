@@ -70,6 +70,13 @@ df$chr<-gsub("X","23",df$chr)
 df$chr<-gsub("Y","24",df$chr)
 df$chr<-gsub("M","25",df$chr)
 
+df$chr <- as.character(df$chr)
+df$chr[df$chr == "chrM"] <- "chr26"
+df$chr[df$chr == "chrY"] <- "chr24"
+df$chr[df$chr == "chrX"] <- "chr23"
+df$chr <- as.numeric(gsub("chr", "", df$chr))
+
+
 write.csv(df,file="/panfs/panasas01/shared-godmc/database_files/genes.csv",na="NULL",row.names=FALSE)
 
 
