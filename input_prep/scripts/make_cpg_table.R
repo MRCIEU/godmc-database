@@ -29,8 +29,9 @@ length(unique(clumped2$cpg))
 #190102
 
 data=as.data.table(clumped2)
-data[,cpgchr:=gsub("23","X",cpgchr),]
-data[,cpgchr:=gsub("24","Y",cpgchr),]
+# data[,cpgchr:=gsub("23","X",cpgchr),]
+# data[,cpgchr:=gsub("24","Y",cpgchr),]
+data$cpgchr <- as.numeric(gsub("chr", "", data$cpgchr))
 data[,cpg_cis:=ifelse(all(cis),"cis only",ifelse(all(!cis),"trans only","ambivalent")),by=c("cpgchr","cpgpos")]
 
 clumped2<-data.frame(data)
