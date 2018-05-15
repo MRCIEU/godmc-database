@@ -7,7 +7,8 @@ load("/panfs/panasas01/shared-godmc/database_files/snps.rdata")
 arguments<-commandArgs(T)
 chunk<-as.numeric(arguments[1])
 
-
+load("/panfs/panasas01/shared-godmc/godmc_phase2_analysis/results/16/16_clumped.rdata")
+clumped$code <- paste(clumped$snp, clumped$cpg)
 #res.all<-data.frame()
 #for (chunk in 1:length(chunks)){
 
@@ -43,7 +44,8 @@ res<-res[,-w]
 #write.csv(res.all,file="/panfs/panasas01/shared-godmc/database_files/assoc_meta.csv",na="NULL")
 
 names(res)<-c("snp","cpg","freq_se","se","pval","direction","hetisq","hetchisq","hetpval","se_are","pval_are","tausq","se_mre","pval_mre","samplesize","cistrans","chunk","allele1","allele2","freq_a1","beta_a1","beta_are_a1","num_studies")
-
+code <- paste(res$snp, res$cpg)
+res$clumped <- code %in% clumped$code
 write.csv(res,paste0(file="/panfs/panasas01/shared-godmc/database_files/assoc_meta",chunk,".csv"),na="NULL",row.names=F)
 
 #awk -F"," 'BEGIN{OFS=",";} {print $2,$1,$21,$4,$5,$15,$18,$19,$20,$3,$16,$23,$6,$7,$8,$9,$12,$22,$10,$11,$13,$14,$17;}' <assoc_meta_all.csv >assoc_meta_all.csv2

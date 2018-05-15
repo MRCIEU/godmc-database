@@ -94,6 +94,7 @@ CREATE TABLE IF NOT EXISTS assoc_meta (
     se_mre DOUBLE NOT NULL,
     pval_mre DOUBLE NOT NULL,
     chunk INT NOT NULL,
+    clumped BOOL NOT NULL,
     PRIMARY KEY(cpg, snp),
     INDEX(cpg),
     INDEX(snp)
