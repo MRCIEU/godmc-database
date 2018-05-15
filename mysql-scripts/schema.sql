@@ -39,7 +39,7 @@ CREATE TABLE IF NOT EXISTS cohort (
 CREATE TABLE IF NOT EXISTS cpg (
     name VARCHAR(20) NOT NULL,
     probetype TINYTEXT NOT NULL,
-    chr TINYTEXT NOT NULL,
+    chr INT NOT NULL,
     pos INT NOT NULL,
     assoc_class TINYTEXT NOT NULL,
     qc_zhou BOOL NOT NULL,
@@ -53,7 +53,7 @@ CREATE TABLE IF NOT EXISTS cpg (
 CREATE TABLE IF NOT EXISTS snp (
     name VARCHAR(20) NOT NULL,
     rsid TINYTEXT NOT NULL,
-    chr TINYTEXT NOT NULL,
+    chr INT NOT NULL,
     pos INT NOT NULL,
     allele1 TINYTEXT NOT NULL,
     allele2 TINYTEXT NOT NULL,
@@ -117,7 +117,7 @@ CREATE TABLE IF NOT EXISTS assoc_cohort (
 
 CREATE TABLE IF NOT EXISTS gene (
     name VARCHAR(20) NOT NULL,
-    chr TINYTEXT NOT NULL,
+    chr INT NOT NULL,
     start_pos INT NOT NULL,
     stop_pos INT NOT NULL,
     start_original INT NOT NULL,

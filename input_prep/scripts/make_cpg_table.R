@@ -100,7 +100,12 @@ df<-data.frame(df,df2[m,-1])
 df<-data.frame(df[,c("name","probetype","chr","pos","assoc_class","qc_zhou","qc_twinsuk","weighted_mean","weighted_sd","samplesize")])
 df$name<-as.character(df$name)
 df$chr<-as.character(df$chr)
+
 save(df,file="/panfs/panasas01/shared-godmc/database_files/cpgs.rdata")
+df$chr<-gsub("chr","",df$chr)
+df$chr<-gsub("X","23",df$chr)
+df$chr<-gsub("Y","24",df$chr)
+df$chr<-gsub("M","25",df$chr)
 w<-which(df$probetype=="control")
 df[w,c("chr","pos","assoc_class","qc_zhou","qc_twinsuk","weighted_mean","weighted_sd","samplesize")]<-"NULL"
 write.csv(df,file="/panfs/panasas01/shared-godmc/database_files/cpgs.csv",na="NULL",row.names=FALSE)

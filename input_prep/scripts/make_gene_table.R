@@ -65,6 +65,10 @@ gene$end[w]<-gene$start.original[w]
 
 names(gene)
 df<-data.frame(name=gene$genename,chr=gene$chromosome,start_pos=gene$start.original,stop_pos=gene$end.original,start_original=gene$start,stop_original=gene$end,source=gene$source,strand_original=gene$V7,annotation=gene$V9, gene_type=gene$gene_type)
+df$chr<-gsub("chr","",df$chr)
+df$chr<-gsub("X","23",df$chr)
+df$chr<-gsub("Y","24",df$chr)
+df$chr<-gsub("M","25",df$chr)
 
 df$chr <- as.character(df$chr)
 df$chr[df$chr == "chrM"] <- "chr26"
