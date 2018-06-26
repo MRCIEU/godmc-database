@@ -14,4 +14,5 @@ names(dframe2)<-c("study","m_value","m_sd","m_se")
 m<-match(r$name,dframe2[,1])
 df<-data.frame(r,dframe2[m,-1])
 df<-data.frame(df[,c("name","samplesize","origin","tissue","cohort_type","phase","nsnp","ncpg","genotype_array","methylation_array","imputation_reference","imputation_software","normalisation_software","normalisation_method","sampleQC_methylation","probeQC_methylation","postnormalization_QC","covariates","cellcounts","cellcounts_reference","average_age","lambda_nocisadj","lambda_cisadj","m_value","m_sd","m_se","proportion_male")])
-write.csv(r,file="/panfs/panasas01/shared-godmc/database_files/cohort.csv",na="NULL",row.names=FALSE)
+write.csv(df,file="/panfs/panasas01/shared-godmc/database_files/cohort.csv",na="NULL",row.names=FALSE)
+
