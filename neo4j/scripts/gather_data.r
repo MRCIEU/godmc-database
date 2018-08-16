@@ -26,13 +26,32 @@ mkdir -p $workdir/data/trait-cpg
 # mqtl
 ## sftp stuff
 
+Rscript mqtl.r \
+	../data/mqtl/cpgs.rdata \
+	$phase2dir/05_cis-trans-networks/results/graph.rdata \
+	../data/mqtl/snps.rdata \
+	../data/mqtl/assoc_meta_all.csv \
+	../data/mqtl
+gzip -f ../data/mqtl/cpgs.csv
+gzip -f ../data/mqtl/snps.csv
+
+sed 1d ../data/mqtl/assoc_meta_all.csv | gzip -c > ../data/mqtl/mqtl.csv.gz
+
+
+# communities
+
+Rscript communities.r \
+	$phase2dir/05_cis-trans-networks/results/graph.rdata \
+	../data/communities
+gzip -f ../data/communities/coloc.csv
+
 
 # trait-cpg
 
 Rscript trait-cpg.r \
 	$phase2dir/06_mr-gwas-cpg/data/snps_gwas.rdata \
 	$phase2dir/06_mr-gwas-cpg/results/mrbase_tophits_full.rdata \
-	$workdir/data/trait-cpg
+	../data/trait-cpg
 
 
 # 2d
@@ -40,32 +59,29 @@ Rscript trait-cpg.r \
 Rscript 2d.r \
 	$phase2dir/11_2d-enrichments/data/annotations.rdata \
 	$phase2dir/11_2d-enrichments/results/difres/difres0.rdata \
-	$workdir/data/2d
+	../data/2d
 
 
-# communities
-
-Rscript communities.r \
-	$phase2dir/05_cis-trans-networks/results/graph.rdata
-	$workdir/data/communities
 
 
 # cpg-trait
 
 Rscript cpg-trait.r \
 	$phase2dir/10_mr-cpg-gwas/results \
-	$workdir/data/cpg-trait
+	../data/cpg-trait
 
 
 
 
-$neo4j/bin/neo4j-admin import \
+rm -rf ../neo4j-community-3.4.5/data/databases/temp.db
+../neo4j-community-3.4.5/bin/neo4j-admin import \
 --database temp.db \
 --id-type string \
---nodes:cpg "cpgs_header.csv,cpgs.csv" \
---nodes:snp "snps_header.csv,snps.csv"
-
-rm -rf $neo4j/data/databases/temp.db
+--ignore-missing-nodes=true \
+--nodes:cpg "../data/mqtl/cpgs_header.csv,../data/mqtl/cpgs.csv.gz" \
+--nodes:snp "../data/mqtl/snps_header.csv,../data/mqtl/snps.csv.gz" \
+--relationships:coloc "../data/communities/coloc_header.csv,../data/communities/coloc.csv.gz" \
+--relationships:mqtl "../data/mqtl/mqtl_header.csv,../data/mqtl/mqtl.csv.gz"
 
 
 
