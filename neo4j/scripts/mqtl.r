@@ -2,11 +2,11 @@ library(dplyr)
 library(GenomicRanges)
 source("utils.r")
 
-cpgdat <- "../data/mqtl/cpgs.rdata"
+cpgdat <- "../raw/cpgs.rdata"
 graphdat <- "/mnt/storage/private/mrcieu/research/GODMC_Analysis/godmc_phase2_analysis/05_cis-trans-networks/results/graph.rdata"
-snpdat <- "../data/mqtl/snps.rdata"
-mqtldat <- "../data/mqtl/assoc_meta_all.csv"
-genedat <- "../data/mqtl/genes.csv"
+snpdat <- "../raw/snps.rdata"
+mqtldat <- "../raw/assoc_meta_all.csv"
+genedat <- "../raw/genes.csv"
 
 
 ##

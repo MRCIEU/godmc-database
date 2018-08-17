@@ -39,3 +39,6 @@ Rscript cpg-trait.r
 
 Rscript 2d.r
 
+cd ../
+tar cvf data.tar data/
+

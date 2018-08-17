@@ -1,8 +1,10 @@
 #!/bin/bash
 
+version="3.4.5"
 
-rm -rf ../neo4j-community-3.4.6/data/databases/godmc.db
-../neo4j-community-3.4.6/bin/neo4j-admin import \
+
+rm -rf ../neo4j-community-${version}/data/databases/godmc.db
+../neo4j-community-${version}/bin/neo4j-admin import \
 --database godmc.db \
 --id-type string \
 --ignore-missing-nodes=true \
