@@ -80,8 +80,14 @@ rm -rf ../neo4j-community-3.4.5/data/databases/temp.db
 --ignore-missing-nodes=true \
 --nodes:cpg "../data/mqtl/cpgs_header.csv,../data/mqtl/cpgs.csv.gz" \
 --nodes:snp "../data/mqtl/snps_header.csv,../data/mqtl/snps.csv.gz" \
---relationships:coloc "../data/communities/coloc_header.csv,../data/communities/coloc.csv.gz" \
---relationships:mqtl "../data/mqtl/mqtl_header.csv,../data/mqtl/mqtl.csv.gz"
+--nodes:trait "../data/trait-cpg/trait_header.csv,../data/trait-cpg/trait.csv.gz" \
+--relationships:mr:coloc "../data/communities/coloc_header.csv,../data/communities/coloc.csv.gz" \
+--relationships:mr "../data/trait-cpg/res_header.csv,../data/trait-cpg/res.csv.gz" \
+--relationships:mr "../data/trait-cpg/het_header.csv,../data/trait-cpg/het.csv.gz" \
+--relationships:mr "../data/trait-cpg/plei_header.csv,../data/trait-cpg/plei.csv.gz" \
+--relationships:mr "../data/trait-cpg/full_header.csv,../data/trait-cpg/full.csv.gz" \
+--relationships:ga "../data/trait-cpg/inst_header.csv,../data/trait-cpg/inst.csv.gz" \
+--relationships:ga:mqtl "../data/mqtl/mqtl_header.csv,../data/mqtl/mqtl.csv.gz"
 
 
 

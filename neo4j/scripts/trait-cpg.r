@@ -2,46 +2,16 @@ library(TwoSampleMR)
 ao <- available_outcomes()
 library(dplyr)
 source("utils.r")
+load("../data/trait_id_master.rdata")
 
-args <- commandArgs(T)
-instdat <- args[1]
-topdat <- args[2]
-outdir <- args[3]
 
+traits <- subset(ao, id %in% subset(master, !is.na(id_06))$id_mrb) %>% as_data_frame
+
+instdat <- "/mnt/storage/private/mrcieu/research/GODMC_Analysis/godmc_phase2_analysis/06_mr-gwas-cpg/data/snps_gwas.rdata"
 
 load(instdat)
 
-
-gkeep <- filter(a, grepl("mr", data_source.exposure))
-gkeeps <- gkeep %>% group_by(id.exposure, trait, exposure) %>% summarise(n=n()) %>% arrange(desc(n)) %>% ungroup %>% filter(!duplicated(trait))
-gkeep <- gkeep %>% filter(id.exposure %in% gkeeps$id.exposure) %>% as_data_frame
-
-
-
-ao$name <- paste(ao$trait, "||", ao$consortium, "||", ao$year, "||", ao$unit)
-
-traits <- unique(gkeep$exposure)
-table(traits %in% ao$name)
-rename <- traits[which(!traits %in% ao$name)]
-
-gkeep$exposure[gkeep$exposure == rename[1]] <- "Serum creatinine (eGFRcrea) || CKDGen || 2015 || log ml/min/1.73 m^2"
-gkeep$exposure[gkeep$exposure == rename[2]] <- "Serum cystatin C (eGFRcys) || CKDGen || 2015 || log ml/min/1.73 m^2"
-gkeep$exposure[gkeep$exposure == rename[3]] <- "Father's age at death || UK Biobank || 2016 || SD"
-gkeep$exposure[gkeep$exposure == rename[4]] <- "Mother's age at death || UK Biobank || 2016 || SD"
-
-traits <- unique(gkeep$exposure)
-table(traits %in% ao$name)
-
-
-temp <- group_by(gkeep, exposure, id.exposure) %>% summarise(n=n())
-
-temp2 <- filter(ao, name %in% gkeep$exposure) %>% group_by(name, id) %>% summarise(n=n()) %>% arrange(desc(n)) %>% filter(!duplicated(name))
-
-temp2 <- data_frame(exposure = temp2$name, mrbid=temp2$id)
-
-gkeep <- left_join(gkeep, temp2)
-gkeep$trait <- strsplit(gkeep$exposure, split="\\|") %>% sapply(function(x) x[1]) %>% gsub(" $", "", .)
-
+gkeep <- subset(a, id.exposure %in% master$id_06)
 inst <- data_frame(
 	snp = gkeep$id,
 	rsid = gkeep$SNP,
@@ -56,25 +26,75 @@ inst <- data_frame(
 	id=gkeep$id.exposure,
 	samplesize=gkeep$samplesize.exposure,
 	ncase=gkeep$ncase.exposure,
-	ncontrol=gkeep$ncontrol.exposure,
-	mrbid=gkeep$mrbid
+	ncontrol=gkeep$ncontrol.exposure
 )
 
 names(inst) <- modify_rel_headers_for_neo4j(inst, "snp", "snp", "id", "trait")
 
-temp2 <- filter(ao, name %in% gkeep$exposure) %>% group_by(name, id) %>% summarise(n=n()) %>% arrange(desc(n)) %>% filter(!duplicated(name))
-trait <- subset(ao, id %in% temp2$id) %>% as_data_frame
-names(trait)[names(trait) == "id"] <- "mrbid"
-temp <- data_frame(id=gkeep$id.exposure, name=gkeep$exposure) %>% filter(!duplicated(id))
-trait <- inner_join(trait, temp)
-names(trait) <- modify_node_headers_for_neo4j(trait, "id", "trait")
+
+names(traits)[names(traits) == "id"] <- "id_mrb"
+temp <- data_frame(id=master$id_06, id_mrb=master$id_mrb)
+traits <- inner_join(traits, temp)
+names(traits) <- modify_node_headers_for_neo4j(traits, "id", "trait")
 
 
-# Write trait
-
-# Write inst
+write_out(traits, "../data/trait-cpg/trait", header=TRUE)
+write_out(inst, "../data/trait-cpg/inst", header=TRUE)
 
 
 
+###################
+
+
+topdat <- "/mnt/storage/private/mrcieu/research/GODMC_Analysis/godmc_phase2_analysis/06_mr-gwas-cpg/results/mrbase_tophits_full.rdata"
+
+
+load(topdat)
+names(res)[names(res) == "b"] <- "beta"
+res <- subset(res, id.exposure %in% traits$`traitId:ID(trait)`, select=-c(id.outcome, exposure))
+names(res) <- modify_rel_headers_for_neo4j(res, "id.exposure", "trait", "outcome", "cpg")
+
+names(plei)[names(plei) == "b"] <- "beta"
+plei <- subset(plei, id.exposure %in% traits$`traitId:ID(trait)`, select=-c(id.outcome, exposure))
+names(plei) <- modify_rel_headers_for_neo4j(plei, "id.exposure", "trait", "outcome", "cpg")
+
+names(het)[names(het) == "b"] <- "beta"
+het <- subset(het, id.exposure %in% traits$`traitId:ID(trait)`, select=-c(id.outcome, exposure))
+names(het) <- modify_rel_headers_for_neo4j(het, "id.exposure", "trait", "outcome", "cpg")
+
+write_out(res, "../data/trait-cpg/res", header=TRUE)
+write_out(het, "../data/trait-cpg/het", header=TRUE)
+write_out(plei, "../data/trait-cpg/plei", header=TRUE)
+
+
+####
+
+nom <- list.files("/mnt/storage/private/mrcieu/research/GODMC_Analysis/godmc_phase2_analysis/06_mr-gwas-cpg/results/out/") %>% grep("gwas", ., value=TRUE) %>% paste0("/mnt/storage/private/mrcieu/research/GODMC_Analysis/godmc_phase2_analysis/06_mr-gwas-cpg/results/out/", .)
+
+load(nom[1])
+names(res)[names(res) == "b"] <- "beta"
+res <- subset(res, id.exposure %in% traits$`traitId:ID(trait)`, select=-c(id.outcome, exposure))
+names(res) <- modify_rel_headers_for_neo4j(res, "id.exposure", "trait", "outcome", "cpg")
+write.table(res[0,], file="../data/trait-cpg/full_header.csv", row=FALSE, col.names=TRUE, sep=",")
+
+j <- 1
+g <- gzfile("../data/trait-cpg/full.csv.gz", "w")
+
+for(i in 1:length(nom))
+{
+	message(i)
+	load(nom[i])
+	if(res[1,1] %in% traits$`traitId:ID(trait)`)
+	{
+		names(res)[names(res) == "b"] <- "beta"
+		res <- subset(res, id.exposure %in% traits$`traitId:ID(trait)`, select=-c(id.outcome, exposure))
+		names(res) <- modify_rel_headers_for_neo4j(res, "id.exposure", "trait", "outcome", "cpg")
+		write.table(res, g, row=FALSE, col.names=FALSE, sep=",")
+	} else {
+		message("Skip")
+	}
+}
+
+close(g)
 
 

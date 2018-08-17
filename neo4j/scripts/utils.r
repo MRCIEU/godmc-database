@@ -65,3 +65,13 @@ modify_rel_headers_for_neo4j <- function(x, id1, id1name, id2, id2name)
 	return(names(x))
 }
 
+
+write_out <- function(x, basename, header=FALSE)
+{
+	g <- gzfile(paste0(basename, ".csv.gz"), "w")
+	write.table(x, g, row.names=FALSE, col.names=FALSE, na="", sep=",")
+	close(g)
+	if(header) write.table(x[0,], file=paste0(basename, "_header.csv"), row.names=FALSE, col.names=TRUE, sep=",")
+}
+
+
