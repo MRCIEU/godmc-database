@@ -2,10 +2,10 @@
 
 version=`cat version.txt`
 
+cd ../
+rm -rf neo4j-community-${version}/data/databases/godmc.db
 
-rm -rf ../neo4j-community-${version}/data/databases/godmc.db
-
-../neo4j-community-${version}/bin/neo4j-admin import \
+neo4j-community-${version}/bin/neo4j-admin import \
 --database godmc.db \
 --id-type string \
 --ignore-missing-nodes=true \
@@ -28,4 +28,6 @@ rm -rf ../neo4j-community-${version}/data/databases/godmc.db
 --relationships:ga:mqtl "../data/mqtl/mqtl_header.csv,../data/mqtl/mqtl.csv.gz" \
 --relationships:anno "../data/mqtl/snp_gene_header.csv,../data/mqtl/snp_gene.csv.gz" \
 --relationships:anno "../data/mqtl/cpg_gene_header.csv,../data/mqtl/cpg_gene.csv.gz"
+
+# rsync -avu --progress neo4j-community-${version}/ gh13047@shark.epi.bris.ac.uk:godmc-database/neo4j/neo4j-community-${version}/
 

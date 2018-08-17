@@ -20,3 +20,19 @@ Bring together the mQTL, MR, community and 2D enrichment data
 `build_neo4j.sh` will build the graph database
 
 
+## Deploying
+
+After building (e.g. on bc4) need to deploy.
+Copy the files over to `shark.epi.bris.ac.uk` using rsync then build and run the docker container
+
+
+```
+./rsync.sh
+```
+
+```
+docker build -t godmc-neo4j .
+docker-compose up -d
+```
+
+
