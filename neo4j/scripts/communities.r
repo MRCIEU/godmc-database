@@ -1,13 +1,10 @@
+library(dplyr)
 source("utils.r")
 
-args <- commandArgs(T)
-
-datfile <- args[1]
-outdir <- args[2]
+datfile <- "/mnt/storage/private/mrcieu/research/GODMC_Analysis/godmc_phase2_analysis/05_cis-trans-networks/results/graph.rdata"
 
 load(datfile)
 names(dat) <- modify_rel_headers_for_neo4j(dat, "creg", "cpg", "tcpg", "cpg")
 
-write.table(dat[0,], file=paste0(outdir, "/coloc_header.csv"), row.names=FALSE, col.names=TRUE, sep=",")
-write.table(dat, file=paste0(outdir, "/coloc.csv"), row.names=FALSE, col.names=FALSE, na="", sep=",")
+write_out(dat, "../data/communities/coloc", header=TRUE)
 

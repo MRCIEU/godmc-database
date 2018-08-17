@@ -30,6 +30,7 @@ fn <- paste0("/mnt/storage/private/mrcieu/research/GODMC_Analysis/godmc_phase2_a
 
 load(fn[1])
 
+res <- data_frame(exposure=res$cpg, outcome=res$outcome, method=res$method, beta=res$Estimate, se=res$StdError, pval=res$Pvalue, Q_pval=res$heter, nsnp=res$nsnp)
 names(res) <- modify_rel_headers_for_neo4j(res, "exposure", "cpg", "outcome", "trait")
 
 write.table(res[0,], file="../data/cpg-trait/full_header.csv", row=FALSE, col=TRUE, sep=",")
