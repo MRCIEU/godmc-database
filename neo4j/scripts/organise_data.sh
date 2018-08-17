@@ -40,5 +40,7 @@ Rscript cpg-trait.r
 Rscript 2d.r
 
 cd ../
-tar cvf data.tar data/
+#tar cvf data.tar data/
+rsync -avu data/ gh13047@shark.epi.bris.ac.uk:godmc-database/neo4j/data/
+rsync -avu 
 
