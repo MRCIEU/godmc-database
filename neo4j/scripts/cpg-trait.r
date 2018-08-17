@@ -46,6 +46,10 @@ for(i in 1:length(fn))
 	{
 		message("skip")
 	} else {
+		if("exposure" %in% names(res))
+		{
+			names(res)[names(res) == "exposure"] <- "cpg"
+		}
 		res <- data_frame(exposure=res$cpg, outcome=res$outcome, method=res$method, beta=res$Estimate, se=res$StdError, pval=res$Pvalue, Q_pval=res$heter, nsnp=res$nsnp)
 		res$outcome <- newout		
 		res <- filter(res, !is.infinite(se))
