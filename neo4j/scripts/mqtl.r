@@ -24,10 +24,10 @@ write_out(df, "../data/mqtl/cpgs", header=TRUE)
 ##
 
 load(snpdat)
-out_df2 <- subset(out_df2, !duplicated(name))
 out_df2$id <- out_df2$name
+out_df2 <- subset(out_df2, !duplicated(name), select=-c(name))
+names(out_df2)[names(out_df2) == "rsid"] <- "name"
 names(out_df2) <- modify_node_headers_for_neo4j(out_df2, "id", "snp")
-
 write_out(out_df2, "../data/mqtl/snps", header=TRUE)
 
 
@@ -36,6 +36,25 @@ write_out(out_df2, "../data/mqtl/snps", header=TRUE)
 
 gen <- read.csv(genedat, stringsAsFactors=FALSE)
 gen <- subset(gen, !duplicated(name))
+gen$id <- gen$name
+
+fn <- function(x)
+{
+	a <- strsplit(x, ";")[[1]] %>% gsub("^ ", "", .) %>% strsplit(., " ")
+	b <- sapply(a, function(x) x[[1]])
+	c <- lapply(a, function(x) x[[2]])
+	names(c) <- b
+	return(as_data_frame(c))
+}
+l <- list()
+for(i in 1:nrow(gen))
+{
+	l[[i]] <- fn(gen$annotation[i])
+}
+l1 <- bind_rows(l)
+gen <- subset(gen, select=-c(annotation, gene_type))
+l1 <- subset(l1, select=-c(gene_name))
+gen <- cbind(gen, l1)
 
 # gen$chr <- as.character(gen$chr)
 # gen$chr[gen$chr == "23"] <- "X"
@@ -59,7 +78,7 @@ snpi <- findOverlaps(gr, snp) %>% as_data_frame
 cpgi <- data_frame(cpg=df$name[cpgi$subjectHits], gene=gen$name[cpgi$queryHits])
 snpi <- data_frame(snp=out_df2$name[snpi$subjectHits], gene=gen$name[snpi$queryHits])
 
-names(gen) <- modify_node_headers_for_neo4j(gen, "name", "gene")
+names(gen) <- modify_node_headers_for_neo4j(gen, "id", "gene")
 names(cpgi) <- modify_rel_headers_for_neo4j(cpgi, "gene", "gene", "cpg", "cpg")
 names(snpi) <- modify_rel_headers_for_neo4j(snpi, "gene", "gene", "snp", "snp")
 

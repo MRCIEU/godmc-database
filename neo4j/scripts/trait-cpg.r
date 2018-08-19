@@ -35,6 +35,7 @@ names(inst) <- modify_rel_headers_for_neo4j(inst, "snp", "snp", "id", "trait")
 names(traits)[names(traits) == "id"] <- "id_mrb"
 temp <- data_frame(id=master$id_06, id_mrb=master$id_mrb)
 traits <- inner_join(traits, temp)
+names(traits)[names(traits) == "trait"] <- "name"
 names(traits) <- modify_node_headers_for_neo4j(traits, "id", "trait")
 
 
