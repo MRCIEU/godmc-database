@@ -24,8 +24,8 @@ RUN ln -s /data /var/lib/neo4j/data
 RUN apk del curl
 
 
-#RUN wget https://github.com/neo4j-contrib/neo4j-apoc-procedures/releases/download/3.2.3.6/apoc-3.2.3.6-all.jar
-#RUN mv apoc-3.2.3.6-all.jar plugins/
+RUN mkdir /plugins/
+RUN wget https://github.com/neo4j-contrib/neo4j-apoc-procedures/releases/download/3.2.3.6/apoc-3.2.3.6-all.jar -P /plugins/
 
 ENV PATH /var/lib/neo4j/bin:$PATH
 
