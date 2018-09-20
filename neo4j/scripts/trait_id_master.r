@@ -148,4 +148,8 @@ save(master, file="../data/trait_id_master.rdata")
 write.table(master, file="../data/trait_id_master.txt")
 
 
-
+library(magrittr)
+ao <- TwoSampleMR::available_outcomes()
+b <- subset(ao, id %in% subset(master, !is.na(id_06))$id_mrb) %$% 
+	data_frame(trait, author, pmid, sample_size, ncase, ncontrol, subcategory)
+write.csv(b, "../data/traits_06.csv")
