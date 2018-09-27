@@ -51,14 +51,14 @@ inst <- data_frame(
 	ncontrol=gkeep$ncontrol.exposure
 )
 
-names(inst) <- modify_rel_headers_for_neo4j(inst, "snp", "snp", "id", "trait")
+names(inst) <- modify_rel_headers_for_neo4j(inst, "snp", "Snp", "id", "Trait")
 
 temp2 <- filter(ao, name %in% gkeep$exposure) %>% group_by(name, id) %>% summarise(n=n()) %>% arrange(desc(n)) %>% filter(!duplicated(name))
 trait_firstpass <- subset(ao, id %in% temp2$id) %>% as_data_frame
 names(trait_firstpass)[names(trait_firstpass) == "id"] <- "mrbid"
 temp <- data_frame(id=gkeep$id.exposure, name=gkeep$exposure) %>% filter(!duplicated(id))
 trait_firstpass <- inner_join(trait_firstpass, temp)
-names(trait_firstpass) <- modify_node_headers_for_neo4j(trait_firstpass, "id", "trait")
+names(trait_firstpass) <- modify_node_headers_for_neo4j(trait_firstpass, "id", "Trait")
 
 
 
@@ -88,7 +88,7 @@ a$trait[grep("Weight", a$trait, ignore.case=TRUE)]
 traits10 <- a
 traits10$id <- as.character(traits10$id)
 
-temp1 <- data_frame(id=b$mrbid, newid=b$`traitId:ID(trait)`)
+temp1 <- data_frame(id=b$mrbid, newid=b$`TraitId:ID(Trait)`)
 traits10 <- left_join(traits10, temp1, by="id")
 temp2 <- data_frame(id=traits10$id, trait=traits10$trait)
 
@@ -106,7 +106,7 @@ head(t2)
 table(t2$mrbid == t2$id)
 t2$mrbid <- t2$id
 t2 <- subset(t2, select=-c(id))
-t1 <- subset(b, !`traitId:ID(trait)` %in% t2$`traitId:ID(trait)`)
+t1 <- subset(b, !`TraitId:ID(Trait)` %in% t2$`TraitId:ID(Trait)`)
 
 traits <- rbind(t1, t2)
 traits10_k <- subset(traits10, id %in% traits$mrbid)
@@ -120,7 +120,7 @@ traits10_k <- subset(traits10, id %in% traits$mrbid)
 
 
 
-backmatch <- data_frame(id_mrb=traits$mrbid, id_06=traits$`traitId:ID(trait)`, name_06=traits$name)
+backmatch <- data_frame(id_mrb=traits$mrbid, id_06=traits$`TraitId:ID(Trait)`, name_06=traits$name)
 
 table(backmatch$id_mrb %in% traits10$id)
 

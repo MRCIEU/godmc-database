@@ -17,7 +17,7 @@ load(graphdat)
 names(mem) <- c("name", "community")
 df <- left_join(df, mem)
 df$assoc_class[df$assoc_class == "probe didn't pass qc"] <- "qc_fail"
-names(df) <- modify_node_headers_for_neo4j(df, "id", "cpg")
+names(df) <- modify_node_headers_for_neo4j(df, "id", "Cpg")
 
 write_out(df, "../data/mqtl/cpgs", header=TRUE)
 
@@ -27,7 +27,7 @@ load(snpdat)
 out_df2$id <- out_df2$name
 out_df2 <- subset(out_df2, !duplicated(name), select=-c(name))
 names(out_df2)[names(out_df2) == "rsid"] <- "name"
-names(out_df2) <- modify_node_headers_for_neo4j(out_df2, "id", "snp")
+names(out_df2) <- modify_node_headers_for_neo4j(out_df2, "id", "Snp")
 write_out(out_df2, "../data/mqtl/snps", header=TRUE)
 
 
@@ -78,9 +78,9 @@ snpi <- findOverlaps(gr, snp) %>% as_data_frame
 cpgi <- data_frame(cpg=df$name[cpgi$subjectHits], gene=gen$name[cpgi$queryHits])
 snpi <- data_frame(snp=out_df2$name[snpi$subjectHits], gene=gen$name[snpi$queryHits])
 
-names(gen) <- modify_node_headers_for_neo4j(gen, "id", "gene")
-names(cpgi) <- modify_rel_headers_for_neo4j(cpgi, "gene", "gene", "cpg", "cpg")
-names(snpi) <- modify_rel_headers_for_neo4j(snpi, "gene", "gene", "snp", "snp")
+names(gen) <- modify_node_headers_for_neo4j(gen, "id", "Gene")
+names(cpgi) <- modify_rel_headers_for_neo4j(cpgi, "gene", "Gene", "cpg", "Cpg")
+names(snpi) <- modify_rel_headers_for_neo4j(snpi, "gene", "Gene", "snp", "Snp")
 
 write_out(gen, "../data/mqtl/gencode", header=TRUE)
 write_out(cpgi, "../data/mqtl/cpg_gene", header=TRUE)
@@ -90,7 +90,7 @@ write_out(snpi, "../data/mqtl/snp_gene", header=TRUE)
 
 
 mqtl <- read.csv(mqtldat, nrows=5000)
-names(mqtl) <- modify_rel_headers_for_neo4j(mqtl, "snp", "snp", "cpg", "cpg")
+names(mqtl) <- modify_rel_headers_for_neo4j(mqtl, "snp", "Snp", "cpg", "Cpg")
 
 write.table(mqtl[0,], file="../data/mqtl//mqtl_header.csv", row.names=FALSE, col.names=TRUE, sep=",")
 

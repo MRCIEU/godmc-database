@@ -20,16 +20,18 @@
 # snps.rdata
 # assoc_meta_all.csv
 
-mkdir -p $workdir/data/mqtl
-mkdir -p $workdir/data/2d
-mkdir -p $workdir/data/communities
-mkdir -p $workdir/data/cpg-trait
-mkdir -p $workdir/data/trait-cpg
+set -e
+
+mkdir -p ../data/mqtl
+mkdir -p ../data/2d
+mkdir -p ../data/communities
+mkdir -p ../data/cpg-trait
+mkdir -p ../data/trait-cpg
 
 Rscript trait_id_master.r
 
 Rscript mqtl.r
-sed 1d ../data/mqtl/assoc_meta_all.csv | gzip -c > ../data/mqtl/mqtl.csv.gz
+#sed 1d ../data/mqtl/assoc_meta_all.csv | gzip -c > ../data/mqtl/mqtl.csv.gz
 
 Rscript communities.r
 
@@ -39,8 +41,8 @@ Rscript cpg-trait.r
 
 Rscript 2d.r
 
-cd ../
+#cd ../
 #tar cvf data.tar data/
-rsync -avu data/ gh13047@shark.epi.bris.ac.uk:godmc-database/neo4j/data/
-rsync -avu 
+#rsync -avu data/ gh13047@shark.epi.bris.ac.uk:godmc-database/neo4j/data/
+#rsync -avu 
 

@@ -17,7 +17,7 @@ names(res)[names(res) == "snp"] <- "rsid"
 names(res)[names(res) == "b"] <- "beta"
 names(res)[names(res) == "p"] <- "pval"
 
-names(res) <- modify_rel_headers_for_neo4j(res, "exposure", "cpg", "id", "trait")
+names(res) <- modify_rel_headers_for_neo4j(res, "exposure", "Cpg", "id", "Trait")
 write_out(res, "../data/cpg-trait/coloc", header=TRUE)
 
 ##
@@ -31,7 +31,7 @@ fn <- paste0("/mnt/storage/private/mrcieu/research/GODMC_Analysis/godmc_phase2_a
 load(fn[1])
 
 res <- data_frame(exposure=res$cpg, outcome=res$outcome, method=res$method, beta=res$Estimate, se=res$StdError, pval=res$Pvalue, Q_pval=res$heter, nsnp=res$nsnp)
-names(res) <- modify_rel_headers_for_neo4j(res, "exposure", "cpg", "outcome", "trait")
+names(res) <- modify_rel_headers_for_neo4j(res, "exposure", "Cpg", "outcome", "Trait")
 
 write.table(res[0,], file="../data/cpg-trait/full_header.csv", row=FALSE, col=TRUE, sep=",")
 
