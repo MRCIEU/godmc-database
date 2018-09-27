@@ -13,5 +13,5 @@ cd ../
 #rm -rf neo4j-community-${version}/data/databases/godmc.db
 #rsync -avu --progress neo4j-community-${version}/ gh13047@shark.epi.bris.ac.uk:godmc-database/neo4j/neo4j-community-${version}/
 
-rsync -avu --progress neo4j-community-${version}/ gh13047@shark.epi.bris.ac.uk:godmc-database/neo4j/import/${version}/
+rsync -avu --progress gh13047@bc4login.acrc.bris.ac.uk:godmc/godmc-database/neo4j/neo4j-community-${version}/ import/${version}/
 

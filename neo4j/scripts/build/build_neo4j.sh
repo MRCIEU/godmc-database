@@ -4,8 +4,6 @@ set -e
 
 version=`cat version.txt`
 
-./organise_data.sh
-
 rm -rf ../neo4j-community-${version}/data/databases/godmc.db
 
 ../neo4j-community-${version}/bin/neo4j-admin import \

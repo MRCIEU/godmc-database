@@ -72,9 +72,10 @@ write_out(plei, "../data/trait-cpg/plei", header=TRUE)
 
 nom <- list.files("/mnt/storage/private/mrcieu/research/GODMC_Analysis/godmc_phase2_analysis/06_mr-gwas-cpg/results/out/") %>% grep("gwas", ., value=TRUE) %>% paste0("/mnt/storage/private/mrcieu/research/GODMC_Analysis/godmc_phase2_analysis/06_mr-gwas-cpg/results/out/", .)
 
-load(nom[1])
+load(nom[2])
 names(res)[names(res) == "b"] <- "beta"
 res <- subset(res, id.exposure %in% traits$`TraitId:ID(Trait)`, select=-c(id.outcome, exposure))
+stopifnot(nrow(res) > 0)
 names(res) <- modify_rel_headers_for_neo4j(res, "id.exposure", "Trait", "outcome", "Cpg")
 write.table(res[0,], file="../data/trait-cpg/full_header.csv", row=FALSE, col.names=TRUE, sep=",")
 
