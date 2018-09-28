@@ -3,9 +3,9 @@ services:
  #neo4j
    db:
     #build: .
-    image: godmc-neo4j:3.4.6
+    image: godmc-neo4j
     restart: always
-    container_name: godmc-neo4j-3-4-6
+    container_name: godmc-neo4j
     #comment out ports to lock down neo4j
     ports:
      - "27600:7474"
@@ -23,4 +23,6 @@ services:
      - NEO4J_dbms_shell_enabled=true
      - NEO4J_dbms_directories_import=import
     volumes:
-     - /home/gh13047/godmc-database/neo4j/neo4j-community-3.4.6/data/:/data
+     #- /home/gh13047/godmc-database/neo4j/neo4j-community-3.4.6/data/:/data
+     - /home/gh13047/godmc-database/neo4j/import/3.4.5/data/:/data
+
