@@ -1,35 +1,39 @@
 all: build data
 build: import.report data
-data: ../data/mqtl/mqtl.csv.gz trait_id_master.r.Rout mqtl.r.Rout communities.r.Rout trait-cpg.r.Rout cpg-trait.r.Rout 2d.r.Rout
+data: data/mqtl/mqtl.csv.gz scripts/trait_id_master.r.Rout scripts/mqtl.r.Rout scripts/communities.r.Rout scripts/trait-cpg.r.Rout scripts/cpg-trait.r.Rout scripts/2d.r.Rout
 
 R := R CMD BATCH --vanilla
 
-trait_id_master.r.Rout: trait_id_master.r
-	$(R) $<
+scripts/trait_id_master.r.Rout: scripts/trait_id_master.r
+	cd $(<D);$(R) $(<F)
 
-mqtl.r.Rout: mqtl.r trait_id_master.r.Rout
-	$(R) $<
+scripts/mqtl.r.Rout: scripts/mqtl.r scripts/trait_id_master.r.Rout
+	cd $(<D);$(R) $(<F)
 
-../data/mqtl/mqtl.csv.gz: ../raw/assoc_meta_all.csv
-	sed 1d ../rawassoc_meta_all.csv | gzip -c > ../data/mqtl/mqtl.csv.gz
+data/mqtl/mqtl.csv.gz: data/raw/assoc_meta_all.csv
+	sed 1d data/raw/assoc_meta_all.csv | gzip -c > data/mqtl/mqtl.csv.gz
 
-communities.r.Rout: communities.r trait_id_master.r.Rout
-	$(R) $<
+scripts/communities.r.Rout: scripts/communities.r scripts/mqtl.r.Rout
+	cd $(<D);$(R) $(<F)
 
-trait-cpg.r.Rout: trait-cpg.r trait_id_master.r.Rout
-	$(R) $<
+scripts/trait-cpg.r.Rout: scripts/trait-cpg.r scripts/mqtl.r.Rout
+	cd $(<D);$(R) $(<F)
 
-cpg-trait.r.Rout: cpg-trait.r trait_id_master.r.Rout
-	$(R) $<
+scripts/cpg-trait.r.Rout: scripts/cpg-trait.r scripts/mqtl.r.Rout
+	cd $(<D); $(R) $(<F)
 
-2d.r.Rout: 2d.r trait_id_master.r.Rout
-	$(R) $<
+scripts/2d.r.Rout: scripts/2d.r
+	cd $(<D); $(R) $(<F)
 
-import.report: build_neo4j.sh data version.txt
-	./build_neo4j.sh
+import.report: scripts/build_neo4j.sh data version.txt
+	cd scripts; ./build_neo4j.sh
 
-test-db-content:
-	./test-db-content.sh
+test:
+	./tests/test-db-content.sh
 
+deploy:
+	cd deploy; docker build -t godmc-neo4j .; docker-compose up -d
 
+transfer:
+	./deploy/rsync.sh
 
