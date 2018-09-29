@@ -24,5 +24,5 @@ services:
      - NEO4J_dbms_directories_import=import
     volumes:
      #- /home/gh13047/godmc-database/neo4j/neo4j-community-3.4.6/data/:/data
-     - /home/gh13047/godmc-database/neo4j/import/3.4.5/data/:/data
+     - /home/gh13047/godmc-database/neo4j/neo4j-community-3.4.5/data/:/data
 

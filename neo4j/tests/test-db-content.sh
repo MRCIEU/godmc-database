@@ -1,6 +1,6 @@
 #!/bin/bash
 
-version=`cat version.txt`
+version=`cat ../version.txt`
 
 cd ../neo4j-community-${version}/bin
 
