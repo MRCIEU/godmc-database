@@ -2,7 +2,7 @@
 
 set -e
 
-version=`cat version.txt`
+version=`cat ../version.txt`
 
 rm -rf ../neo4j-community-${version}/data/databases/godmc.db
 

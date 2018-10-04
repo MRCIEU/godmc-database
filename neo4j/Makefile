@@ -25,8 +25,8 @@ scripts/cpg-trait.r.Rout: scripts/cpg-trait.r scripts/mqtl.r.Rout
 scripts/2d.r.Rout: scripts/2d.r
 	cd $(<D); $(R) $(<F)
 
-import.report: scripts/build_neo4j.sh data version.txt
-	cd scripts; ./build_neo4j.sh
+import.report scripts/build_neo4j.sh.out: scripts/build_neo4j.sh data version.txt
+	cd scripts; ./build_neo4j.sh > build_neo4j.sh.out
 
 test:
 	./tests/test-db-content.sh

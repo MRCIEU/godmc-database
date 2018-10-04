@@ -1,10 +1,14 @@
+ao <- TwoSampleMR::available_outcomes()
 library(dplyr)
 source("utils.r")
 
 load("../data/trait_id_master.rdata")
 
+
 # tophits with coloc
 load("/mnt/storage/private/mrcieu/research/GODMC_Analysis/godmc_phase2_analysis/10_mr-cpg-gwas/results/cpg_trait_coloc.rdata")
+
+master <- subset(master, !id_mrb %in% subset(ao, access == "developer")$id)
 
 idlist <- subset(master, !is.na(id_06))$id_mrb
 res <- subset(res, outcome %in% idlist)
@@ -39,7 +43,7 @@ write.table(res[0,], file="../data/cpg-trait/full_header.csv", row=FALSE, col=TR
 g <- gzfile("../data/cpg-trait/full.csv.gz", "w")
 for(i in 1:length(fn))
 {
-	message(i)
+	message(i, " of ", length(fn))
 	load(fn[i])
 
 	newout <- subset(master, id_10 == res$outcome[1])$id_06

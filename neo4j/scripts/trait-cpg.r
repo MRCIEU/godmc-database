@@ -1,11 +1,10 @@
-library(TwoSampleMR)
-ao <- available_outcomes()
+ao <- TwoSampleMR::available_outcomes()
 library(dplyr)
 source("utils.r")
 load("../data/trait_id_master.rdata")
 
 
-traits <- subset(ao, id %in% subset(master, !is.na(id_06))$id_mrb) %>% as_data_frame
+traits <- subset(ao, id %in% subset(master, !is.na(id_06))$id_mrb & access != "developer") %>% as_data_frame
 
 instdat <- "/mnt/storage/private/mrcieu/research/GODMC_Analysis/godmc_phase2_analysis/06_mr-gwas-cpg/data/snps_gwas.rdata"
 
@@ -46,13 +45,26 @@ write_out(inst, "../data/trait-cpg/inst", header=TRUE)
 
 ###################
 
+sigcodes <- "/mnt/storage/private/mrcieu/research/GODMC_Analysis/godmc_phase2_analysis/06_mr-gwas-cpg/results/mrbase_sig_codes.rdata"
+
+
 
 topdat <- "/mnt/storage/private/mrcieu/research/GODMC_Analysis/godmc_phase2_analysis/06_mr-gwas-cpg/results/mrbase_tophits_full.rdata"
 
+sigcodes <- "/mnt/storage/private/mrcieu/research/GODMC_Analysis/godmc_phase2_analysis/06_mr-gwas-cpg/results/mrbase_sig_codes.rdata"
 
+library(magrittr)
+
+load(sigcodes)
+codes <- codes %$% data_frame(code, decision, pass=msig)
 load(topdat)
 names(res)[names(res) == "b"] <- "beta"
 res <- subset(res, id.exposure %in% traits$`TraitId:ID(Trait)`, select=-c(id.outcome, exposure))
+res$code <- paste(res$id.exposure, res$outcome)
+res <- merge(res, codes, by="code", all.x=TRUE)
+res$decision[is.na(res$decision)] <- 0
+res$pass[is.na(res$pass)] <- FALSE
+res <- subset(res, select=-c(code))
 names(res) <- modify_rel_headers_for_neo4j(res, "id.exposure", "Trait", "outcome", "Cpg")
 
 names(plei)[names(plei) == "b"] <- "beta"
@@ -84,7 +96,7 @@ g <- gzfile("../data/trait-cpg/full.csv.gz", "w")
 
 for(i in 1:length(nom))
 {
-	message(i)
+	message(i, " of ", length(nom))
 	load(nom[i])
 	if(res[1,1] %in% traits$`TraitId:ID(Trait)`)
 	{
