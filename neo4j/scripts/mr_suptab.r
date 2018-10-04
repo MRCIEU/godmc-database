@@ -1,10 +1,13 @@
+ao <- TwoSampleMR::available_outcomes()
 library(dplyr)
 library(data.table)
 a <- fread("zcat ../data/trait-cpg/res.csv.gz")
 b <- scan("../data/trait-cpg/res_header.csv", what="character", sep=",")
-names(a) <- c("trait", "cpg", "method", "nsnp", "beta", "se", "pval", "chunk")
+names(a) <- c("trait", "cpg", "method", "nsnp", "beta", "se", "pval", "chunk", "decision", "pass")
 a <- subset(a, select=-c(chunk))
 load("../data/trait_id_master.rdata")
+master <- subset(master, !id_mrb %in% subset(ao, access == "developer")$id)
+
 temp <- subset(master, select=c(name_10, id_06))
 index <- match(a$trait, master$id_06)
 a$trait <- master$name_10[index]
