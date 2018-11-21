@@ -1,0 +1,28 @@
+version: '2'
+services:
+ #neo4j
+   db:
+    #build: .
+    image: godmc-neo4j
+    restart: always
+    container_name: godmc-neo4j
+    #comment out ports to lock down neo4j
+    ports:
+     - "27600:7474"
+     - "27601:7687"
+     - "27602:7473"
+    environment:
+     - NEO4J_AUTH=neo4j/123qwe # configure the instance with custom username/password
+     #- NEO4J_HEAP_MEMORY=10G
+     #- NEO4J_CACHE_MEMORY=2G
+     - NEO4J_dbms_memory_heap_maxsize=4G
+     - NEO4J_dbms_memory_pagecache_size=4G
+     - NEO4J_dbms_security_procedures_unrestricted=apoc.*,algo.*
+     - NEO4J_apoc_autoIndex_enabled=true
+     - NEO4J_dbms_active__database=godmc.db
+     - NEO4J_dbms_shell_enabled=true
+     - NEO4J_dbms_directories_import=import
+    volumes:
+     #- /home/gh13047/godmc-database/neo4j/neo4j-community-3.4.6/data/:/data
+     - /home/gh13047/godmc-database/neo4j/neo4j-community-3.4.5/data/:/data
+
